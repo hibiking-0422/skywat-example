@@ -44,9 +44,13 @@ const Peer = window.Peer;
   localVideo.srcObject = newVideoStream;
   localVideo.playsInline = true;
   await localVideo.play().catch(console.error);
-
-
-
+   
+  var stockList = '';
+  for (var i=0; i<devices.length;i++){
+    stockList += '<li>'+ devices[i].label + '</li>';　// = ではなく += を使う
+  }
+   
+  document.getElementById('edit_area').innerHTML = stockList;
 
   const peer = (window.peer = new Peer({
     key: window.__SKYWAY_KEY__,
@@ -83,6 +87,10 @@ const Peer = window.Peer;
 
     closeTrigger.addEventListener('click', () => mediaConnection.close(true));
   });
+
+
+
+
 
   peer.once('open', id => (localId.textContent = id));
 
