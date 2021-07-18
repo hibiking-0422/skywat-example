@@ -41,7 +41,7 @@ const Peer = window.Peer;
     console.log(newVideoStream);
   // Render local stream
   localVideo.muted = true;
-  localVideo.srcObject = newVideoStream;
+  localVideo.srcObject = localStream;
   localVideo.playsInline = true;
   await localVideo.play().catch(console.error);
    
@@ -71,7 +71,7 @@ const Peer = window.Peer;
       return;
     }
 
-    const mediaConnection = peer.call(remoteId.value, newVideoStream);
+    const mediaConnection = peer.call(remoteId.value, localStream);
 
     mediaConnection.on('stream', async stream => {
       // Render remote stream for caller
@@ -100,7 +100,7 @@ const Peer = window.Peer;
 
   // Register callee handler
   peer.on('call', mediaConnection => {
-    mediaConnection.answer(newVideoStream);
+    mediaConnection.answer(localStream);
 
     mediaConnection.on('stream', async stream => {
       // Render remote stream for callee
