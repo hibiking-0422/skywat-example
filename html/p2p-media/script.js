@@ -22,16 +22,42 @@ const Peer = window.Peer;
     })
     .catch(console.error);
 
+    // デバイスの一覧を取得
+    const devices = await navigator.mediaDevices.enumerateDevices();
+
+    console.log(devices);
+    // 任意のデバイスを指定
+    const newVideoInputDevice = devices.find(
+      (device) => device.label === "HD Pro Webcam C920 (046d:082d)"
+    );
+    const newVideoStream = await navigator.mediaDevices.getUserMedia({
+      audio:true,
+      video: {
+        deviceId: newVideoInputDevice.deviceId,
+      },
+    });
+
+    console.log(newVideoInputDevice);
+    console.log(newVideoStream);
   // Render local stream
   localVideo.muted = true;
-  localVideo.srcObject = localStream;
+  localVideo.srcObject = newVideoStream;
   localVideo.playsInline = true;
   await localVideo.play().catch(console.error);
+
+
+
 
   const peer = (window.peer = new Peer({
     key: window.__SKYWAY_KEY__,
     debug: 3,
   }));
+
+
+
+
+
+
 
   // Register caller handler
   callTrigger.addEventListener('click', () => {
@@ -41,7 +67,7 @@ const Peer = window.Peer;
       return;
     }
 
-    const mediaConnection = peer.call(remoteId.value, localStream);
+    const mediaConnection = peer.call(remoteId.value, newVideoStream);
 
     mediaConnection.on('stream', async stream => {
       // Render remote stream for caller
@@ -60,9 +86,13 @@ const Peer = window.Peer;
 
   peer.once('open', id => (localId.textContent = id));
 
+
+
+
+
   // Register callee handler
   peer.on('call', mediaConnection => {
-    mediaConnection.answer(localStream);
+    mediaConnection.answer(newVideoStream);
 
     mediaConnection.on('stream', async stream => {
       // Render remote stream for callee
