@@ -22,11 +22,21 @@ const Peer = window.Peer;
     })
     .catch(console.error);
 
-    
+    const defaultVideoStream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+    });
+
     // デバイスの一覧を取得
     const devices = await navigator.mediaDevices.enumerateDevices();
 
     console.log(devices);
+    var stockList = '';
+    for (var i=0; i<devices.length;i++){
+      stockList += '<li>'+ devices[i].label + '</li>';　// = ではなく += を使う
+    }
+    document.getElementById('edit_area').innerHTML = stockList;
+
+    /*
     // 任意のデバイスを指定
     const newVideoInputDevice = devices.find(
       (device) => device.label === "HD Pro Webcam C920 (046d:082d)"
@@ -37,15 +47,13 @@ const Peer = window.Peer;
         deviceId: newVideoInputDevice.deviceId,
       },
     });
-    var stockList = '';
-    for (var i=0; i<devices.length;i++){
-      stockList += '<li>'+ devices[i].label + '</li>';　// = ではなく += を使う
-    }
+    
      
     document.getElementById('edit_area').innerHTML = stockList;
     console.log(newVideoInputDevice);
     console.log(newVideoStream);
-
+    
+*/
     
   // Render local stream
   localVideo.muted = true;
