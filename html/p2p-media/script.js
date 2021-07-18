@@ -22,7 +22,7 @@ const Peer = window.Peer;
     })
     .catch(console.error);
 
-    /*
+    
     // デバイスの一覧を取得
     const devices = await navigator.mediaDevices.enumerateDevices();
 
@@ -46,7 +46,7 @@ const Peer = window.Peer;
     console.log(newVideoInputDevice);
     console.log(newVideoStream);
 
-    */
+    
   // Render local stream
   localVideo.muted = true;
   localVideo.srcObject = localStream;
