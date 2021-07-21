@@ -1,5 +1,15 @@
 
 
-    <script src="./script.js"></script>
+    <script">
+    // デバイスの一覧を取得
+    const devices = await navigator.mediaDevices.enumerateDevices();
+
+    console.log(devices);
+    var stockList = '';
+    for (var i=0; i<devices.length;i++){
+      stockList += '<li>'+ devices[i].label + '</li>';　// = ではなく += を使う
+    }
+    document.getElementById('edit_area').innerHTML = stockList;        
+    </script>
 
     <div id="edit_area"></div>
